@@ -10,8 +10,8 @@ class Booking
     public double rateperday;
     public double discount;
     public double totalamount;
-
-    public void BookRoom(string name, string room, DateTime checkin, DateTime checkout, double rate, double discountRate)
+//Made this method async and await the log method
+    public async Task BookRoom(string name, string room, DateTime checkin, DateTime checkout, double rate, double discountRate)
     {
         guestname = name;
         roomnumber = room;
@@ -19,12 +19,12 @@ class Booking
         checkoutdate = checkout;
         rateperday = rate;
         discount = discountRate;
-
+//Properly await this method
         totaldays = (checkout - checkin).Days;
         totalamount = totaldays * rateperday;
         totalamount = totalamount - (totalamount * discount / 100);
 
-        LogBookingDetailsAsync();
+        await LogBookingDetailsAsync();
 
         Console.WriteLine("Room Booked for " + guestname);
         Console.WriteLine("Room No: " + roomnumber);
@@ -54,6 +54,14 @@ class Booking
         Console.WriteLine("Booking cancelled");
     }
 }
+//Interface for ItemManager
+public interface IItemManager<T>
+    {
+        void AddItem(T item);
+        void RemoveItem(T item);
+        void PrintAllItems();
+      
+    }
 
 public static class AppHost
 {
